@@ -25,15 +25,19 @@ app.get("/", (req, res) => {
 app.post("/api/mpesa/callback", (req, res) => {
     const callbackData = req.body;
 
-    console.log("Callback Received:", callbackData);
+    const { CheckoutRequestID, MerchantRequestID, ResultCode, ResultDesc, Amount } = callbackData;
 
-    // Handle payment success or failure
-    if (callbackData.Body.stkCallback.ResultCode === 0) {
-        console.log("Payment Successful:", callbackData.Body.stkCallback.CallbackMetadata);
+    // Log the response to debug
+    console.log("Callback received:", callbackData);
+
+    if (ResultCode === 0) {
+        // Handle successful payment
+        console.log(`Payment successful for ${Amount} with CheckoutRequestID: ${CheckoutRequestID}`);
     } else {
-        console.log("Payment Failed:", callbackData.Body.stkCallback.ResultDesc);
+        // Handle failed payment
+        console.log(`Payment failed: ${ResultDesc}`);
     }
 
-    // Send a 200 response to MPESA to acknowledge the callback
-    res.status(200).send("Callback received");
+    // Respond with a 200 status to acknowledge receipt
+    res.status(200).send("Accepted");
 });
