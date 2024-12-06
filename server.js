@@ -18,6 +18,10 @@ app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
 
+app.get("/", (req, res) => {
+    res.send("MPESA CALLBACK URL WORKING!!");
+});
+
 app.post("/api/mpesa/callback", (req, res) => {
     const callbackData = req.body;
 
